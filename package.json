@@ -1,6 +1,6 @@
 {
   "name": "collaborator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "easily add new collaborators to your github repos from the CLI",
   "main": "index.js",
   "bin": {
@@ -9,7 +9,8 @@
   "author": "max ogden",
   "license": "BSD",
   "dependencies": {
-    "ghauth": "0.0.2"
+    "ghauth": "0.0.2",
+    "request": "^2.34.0"
   },
   "devDependencies": {},
   "scripts": {
