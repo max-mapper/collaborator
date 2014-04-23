@@ -1,0 +1,15 @@
+{
+  "name": "collaborator",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": "cli.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ghauth": "0.0.2"
+  }
+}
