@@ -6,10 +6,24 @@ module.exports = function(token, user, repo, cb) {
   headers['Authorization'] = 'token ' + token
   request(base + '/user', {json: true, headers: headers}, function(err, resp, me) {
     if (err) return cb(err)
-    console.log(me)
+    if (user) addCollaborators()
+    else getCollaborators()
+    
+    function addCollaborators() {
+      var reqUrl = base + '/repos/' + me.login + '/' + repo + '/collaborators/' + user
+      request.put(reqUrl, { json: true, headers: headers }, function(err, resp, body) {
+        if (err || resp.statusCode > 299) return cb(err || resp.statusCode)
+        getCollaborators()
+      })
+    }
+  
+    function getCollaborators() {
+      var reqUrl = base + '/repos/' + me.login + '/' + repo + '/collaborators'
+      request(reqUrl, { json: true, headers: headers }, function(err, resp, collabs) {
+        if (err || resp.statusCode > 299) return cb(err || resp.statusCode)
+        cb(null, collabs)
+      })
+    }
   })
-  // var reqUrl = base + '/repos/' + owner + '/' + repo + '/collaborators/' + user
-  // request.put(reqUrl, function(err, resp, body) {
-  //   console.log([err, resp.headers, resp.statusCode, body.toString()])
-  // })
 }
+

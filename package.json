@@ -1,15 +1,26 @@
 {
   "name": "collaborator",
-  "version": "0.0.0",
-  "description": "",
+  "version": "1.0.0",
+  "description": "easily add new collaborators to your github repos from the CLI",
   "main": "index.js",
-  "bin": "cli.js",
+  "bin": {
+    "collaborator": "cli.js"
+  },
+  "author": "max ogden",
+  "license": "BSD",
+  "dependencies": {
+    "ghauth": "0.0.2"
+  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "ghauth": "0.0.2"
-  }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maxogden/collaborator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/maxogden/collaborator/issues"
+  },
+  "homepage": "https://github.com/maxogden/collaborator"
 }

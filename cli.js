@@ -18,7 +18,6 @@ auth()
 
 function auth() {
   var user = process.argv[2]
-  if (!user) return console.error('Usage: collaborator <username-to-add>')
   ghauth(authOptions, function (err, authData) {
     if (err) return console.error(err)
     child.exec('git config --get remote.origin.url', function(err, stdo, stde) {
@@ -27,8 +26,23 @@ function auth() {
       var repo = parts[parts.length - 1].split('.git')[0]
       collaborator(authData.token, user, repo, function(err, collaborators) {
         if (err) return console.error('Error: ' + err.message)
-        console.log(collaborators)
+        var collabs = collaborators.map(function(c) { return {'username': c.login, 'avatar': c.avatar_url }})
+
+        var out = '## Collaborators\n\n'
+          + repo + ' is only possible due to the excellent work of the following collaborators:\n\n'
+          + makeTable(collabs)
+          
+        console.log(out)
       })
     })
   })
+}
+
+function makeTable(rows) {
+  var table = '<table><tbody>'
+  rows.map(function(row) {
+    table += '<tr><th align="left">' + row.username + '</th><td><a href="https://github.com/' + row.username + '">GitHub/' + row.username + '</a></td></tr>\n'
+  })
+  table += '</tbody></table>'
+  return table
 }
