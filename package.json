@@ -1,6 +1,6 @@
 {
   "name": "collaborator",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "easily add new collaborators to your github repos from the CLI",
   "main": "index.js",
   "bin": {
