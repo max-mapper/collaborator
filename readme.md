@@ -16,6 +16,14 @@ collaborator
 collaborator maxogden
 ```
 
+You can also specify the `--npm` flag to automatically add them as an owner
+on npm. Be aware that it uses the module [find-npm-by-github](https://www.npmjs.org/package/find-npm-by-github)
+to guess the npm name of the github user.
+
+So you should check the message `Added <npmuser> to module <yourmodule>`  on
+stderr in case the npm user name was wrongly determined.
+
+
 ## example
 
 ```

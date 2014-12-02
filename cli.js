@@ -2,8 +2,9 @@
 var child = require('child_process')
 var url = require('url')
 var ghauth = require('ghauth')
-
+var argv = require('minimist')(process.argv.splice(2))
 var collaborator = require('./')
+var findNPM = require('find-npm-by-github')
 
 var authOptions = {
    // ~/.config/awesome.json will store the token
@@ -17,13 +18,13 @@ var authOptions = {
 auth()
 
 function auth() {
-  var user = process.argv[2]
+  var user = argv._[0]
   ghauth(authOptions, function (err, authData) {
     if (err) return console.error(err)
     child.exec('git config --get remote.origin.url', function(err, stdo, stde) {
       if (err || stdo.toString() === '') return console.error('Error: Could not read git remote origin from current directory')
       var parts = stdo.toString().split('/')
-      var repo = parts[parts.length - 1].split('.git')[0]
+      var repo = parts[parts.length - 1].split('.git')[0].trim()
       collaborator(authData.token, user, repo, function(err, collaborators) {
         if (err) return console.error('Error: ' + err.message)
         var collabs = collaborators.map(function(c) { return {'username': c.login, 'avatar': c.avatar_url }})
@@ -35,6 +36,18 @@ function auth() {
         console.log(out)
       })
     })
+    if(argv.npm) {
+      findNPM(authData.token, user, function (err, npmName) {
+        if(err) return console.error('Could not determine npm name (' +err.message+')')
+        child.exec('npm owner add ' + npmName, function (err, stdo, stde) {
+          if(err || stde.toString() != '') return console.log('Error: Could not add' + npmName + ' on npm')
+          child.exec('npm ls', function (err, stdo, stde) {
+            var moduleName = stdo.toString().split('@')[0]
+            console.error('Added ' + npmName + ' to module ' + moduleName)
+          })
+        })
+      })
+    }
   })
 }
 
