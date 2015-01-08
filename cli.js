@@ -2,7 +2,7 @@
 var child = require('child_process')
 var url = require('url')
 var ghauth = require('ghauth')
-var argv = require('minimist')(process.argv.splice(2))
+var argv = require('minimist')(process.argv.splice(2), {boolean: true})
 var collaborator = require('./')
 var findNPM = require('find-npm-by-github')
 
