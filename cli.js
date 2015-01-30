@@ -40,8 +40,8 @@ function auth() {
       findNPM(authData.token, user, function (err, npmName) {
         if (err) return console.error('Could not determine npm name (' +err.message+')')
         if (!npmName) return console.error('Could not determine npm name')
-        child.exec('npm owner add ' + npmName, function (err, stdo, stde) {
-          if(err || stde.toString() != '') return console.log('Error: Could not add' + npmName + ' on npm')
+        child.exec('npm owner add ' + npmName + ' --quiet', function (err, stdo, stde) {
+          if(err || stde.toString() != '') return console.log('Error: Could not add ' + npmName + ' on npm')
           child.exec('npm ls', function (err, stdo, stde) {
             var moduleName = stdo.toString().split('@')[0]
             console.error('Added ' + npmName + ' to module ' + moduleName)
