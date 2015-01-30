@@ -26,7 +26,7 @@ function auth() {
       var parts = stdo.toString().split('/')
       var repo = parts[parts.length - 1].split('.git')[0].trim()
       collaborator(authData.token, user, repo, function(err, collaborators) {
-        if (err) return console.error('Error: ' + err.message)
+        if (err) return console.error('Error: ' + (err.message || err))
         var collabs = collaborators.map(function(c) { return {'username': c.login, 'avatar': c.avatar_url }})
 
         var out = '## Collaborators\n\n'
