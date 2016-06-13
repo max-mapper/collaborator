@@ -25,7 +25,9 @@ function auth() {
       if (err || stdo.toString() === '') return console.error('Error: Could not read git remote origin from current directory')
       var parts = stdo.toString().split('/')
       var repo = parts[parts.length - 1].split('.git')[0].trim()
-      collaborator(authData.token, user, repo, function(err, collaborators) {
+      var action = 'add'
+      if (argv.del) action = 'del'
+      collaborator(authData.token, action, user, repo, function(err, collaborators) {
         if (err) return console.error('Error: ' + (err.message || err))
         var collabs = collaborators.map(function(c) { return {'username': c.login, 'avatar': c.avatar_url }})
 

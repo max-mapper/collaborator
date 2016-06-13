@@ -13,7 +13,10 @@ npm install -g collaborator
 collaborator
 
 # add maxogden as a collaborator to the current repo
-collaborator maxogden
+collaborator --add maxogden
+
+# remove maxogden as a collaborator from the current repo
+collaborator --del maxogden
 ```
 
 You can also specify the `--npm` flag to automatically add them as an owner
