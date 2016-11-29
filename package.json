@@ -1,6 +1,6 @@
 {
   "name": "collaborator",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "easily add/remove collaborators to/from your github repos from the CLI",
   "main": "index.js",
   "bin": {

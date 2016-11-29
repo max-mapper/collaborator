@@ -27,15 +27,18 @@ function auth() {
       var repo = parts[parts.length - 1].split('.git')[0].trim()
       var action = 'add'
       if (argv.del) action = 'del'
-      collaborator(authData.token, action, user, repo, function(err, collaborators) {
+      var collabs = []
+      collaborator(authData.token, action, user, repo, function(err, pagination, collaborators) {
         if (err) return console.error('Error: ' + (err.message || err))
-        var collabs = collaborators.map(function(c) { return {'username': c.login, 'avatar': c.avatar_url }})
+        collabs = collabs.concat(collaborators)
+        if (pagination.isLastPage) {
+          collabs = collabs.map(function(c) { return {'username': c.login, 'avatar': c.avatar_url }})
+          var out = '## Collaborators\n\n'
+              + repo + ' is only possible due to the excellent work of the following collaborators:\n\n'
+              + makeTable(collabs)
 
-        var out = '## Collaborators\n\n'
-          + repo + ' is only possible due to the excellent work of the following collaborators:\n\n'
-          + makeTable(collabs)
-          
-        console.log(out)
+          console.log(out)
+        }
       })
     })
     if(argv.npm) {

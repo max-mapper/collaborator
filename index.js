@@ -1,4 +1,5 @@
 var request = require('request')
+var parse = require('github-parse-link')
 var base = 'https://api.github.com'
 
 module.exports = function(token, action, user, repo, cb) {
@@ -28,11 +29,18 @@ module.exports = function(token, action, user, repo, cb) {
       })
     }
   
-    function getCollaborators() {
-      var reqUrl = base + '/repos/' + me.login + '/' + repo + '/collaborators'
+    function getCollaborators(reqUrl) {
+      reqUrl = (reqUrl ? reqUrl : base + '/repos/' + me.login + '/' + repo + '/collaborators')
       request(reqUrl, { json: true, headers: headers }, function(err, resp, collabs) {
         if (err || resp.statusCode > 299) return cb(err || resp.statusCode)
-        cb(null, collabs)
+        var nav = parse(resp.headers.link)
+        var pagination = {
+          'isFirstPage': (nav.first ? false : true),
+          'isLastPage': (nav.next ? false : true),
+          'hasNextPage': (nav.next ? true : false)
+        }
+        cb(null, pagination, collabs)
+        if (pagination.hasNextPage) getCollaborators(nav.next)
       })
     }
   })
